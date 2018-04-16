@@ -377,7 +377,7 @@ newtRef PkgWriteFrame(pkg_stream_t *pkg, newtRefArg frame)
 		PkgWriteU32(pkg, dst+12+4*i, slot_pos);
 	}
 
-	return NewtMakePointer(dst);
+	return NewtMakeInt32(dst);
 }
 
 /*------------------------------------------------------------------------*/
@@ -416,7 +416,7 @@ newtRef PkgWriteArray(pkg_stream_t *pkg, newtRefArg array)
 		PkgWriteU32(pkg, dst+12+4*i, slot_pos);
 	}
 
-	return NewtMakePointer(dst);
+	return NewtMakeInt32(dst);
 }
 
 /*------------------------------------------------------------------------*/
@@ -463,7 +463,7 @@ newtRef PkgWriteBinary(pkg_stream_t *pkg, newtRefArg obj)
 		PkgWriteU32(pkg, dst+8, kNewtSymbolClass);
 		PkgWriteU32(pkg, dst+12, NewtRefToHash(obj)); // make sure the hash has the right endianness
 		PkgWriteData(pkg, dst+16, (uint8_t*)NewtSymbolGetName(obj), size-16);
-		return NewtMakePointer(dst);
+		return NewtMakeInt32(dst);
 	}
 
 	// add the class information
@@ -485,7 +485,7 @@ newtRef PkgWriteBinary(pkg_stream_t *pkg, newtRefArg obj)
 		PkgWriteData(pkg, dst+12, data, size-12);
 	}
 
-	return NewtMakePointer(dst);
+	return NewtMakeInt32(dst);
 }
 
 /*------------------------------------------------------------------------*/

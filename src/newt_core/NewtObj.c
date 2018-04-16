@@ -4523,7 +4523,7 @@ static bool fullSearch(uintptr_t p, uint32_t *hashIx, uint32_t *bucketIx)
 }
 #endif
 
-uintptr_t NewtShortToLongPointer(uint32_t ix)
+void *NewtShortToLongPointer(uint32_t ix)
 {
    //   printf("Short to long for %u\n", ix);
    if (ix&3) {
@@ -4544,12 +4544,13 @@ uintptr_t NewtShortToLongPointer(uint32_t ix)
       fprintf(stderr, "ERROR: pointer conversion failed - invalid bucket index\n");
       exit(0);
    }
-   return bucket->lut[bucketIx];
+   return (void*)bucket->lut[bucketIx];
 }
 
 
-uint32_t NewtLongToShortPointer(uintptr_t p)
+uint32_t NewtLongToShortPointer(void *pp)
 {
+   uintptr_t p = (uintptr_t)pp;
    int i, n;
 
    //   printf("Long to short for 0x%016lx\n", p);
