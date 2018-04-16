@@ -83,7 +83,7 @@ typedef struct {
 
 /// structure to manage the package reading process 
 typedef struct {
-	uint8_t		pkg_version;	///< rw corrsponds to the last charof the signature
+	uint8_t		pkg_version;	///< rw corrsponds to the last char of the signature
 	uint8_t *	data;			///< rw package data
 	uint32_t	size;			///< rw size of package
 	uint32_t	data_size;		///< w  size of data block
@@ -609,7 +609,7 @@ void PkgWritePart(pkg_stream_t *pkg, newtRefArg part)
  * @todo	Only NOS parts are currently supported. We still must implement
  *			Protocol parts and Raw parts. 
  *
- * @param rpkg	[in] object hierarchy describing the package
+ * @param package	[in] object hierarchy describing the package
  *
  * @retval	binary object with package
  */
