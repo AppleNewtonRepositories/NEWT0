@@ -30,8 +30,8 @@
 
 #define	NewtRefIsPointer(r)			((r & 3) == 1)						///< ポインタオブジェクトか？
 #if __x86_64__
-extern uintptr_t NewtShortToLongPointer(uint32_t);
-extern uint32_t NewtLongToShortPointer(uintptr_t);
+extern void *NewtShortToLongPointer(uint32_t);
+extern uint32_t NewtLongToShortPointer(void*);
 #define	NewtRefToPointer(r)			(newtObjRef)NewtShortToLongPointer((uint32_t)r - 1)		///< オブジェクト参照をポインタに変換
 #define	NewtMakePointer(v)			(newtRef)(NewtLongToShortPointer(v) + 1)		///< ポインタオブジェクトを作成
 #else

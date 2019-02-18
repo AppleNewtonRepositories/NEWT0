@@ -15,7 +15,11 @@
 #include <stdio.h>
 #include <string.h>
 
+#if NEWT0_FOR_EINSTEIN
+#include "Newt0/darwin/config.h"
+#else
 #include "config.h"
+#endif
 
 #include "NewtCore.h"
 #include "NewtGC.h"
@@ -4037,10 +4041,16 @@ void * NewtRefToNativeFn(newtRefArg r)
 
     fn = NcGetSlot(r, NSSYM0(funcPtr));
 
-    if (NewtRefIsInteger(fn))
-        return (void *)NewtRefToInteger(fn);
-    else
+   if (NewtRefIsInteger(fn)) {
+#if __x86_64__
+         uint32_t v = (((uint32_t)NewtRefToInteger(r)));
+         return (void*)NewtShortToLongPointer( v<<2 );
+#else
+         return (void *)NewtRefToInteger(fn);
+#endif
+   } else {
         return NULL;
+   }
 }
 
 
@@ -4513,7 +4523,7 @@ static bool fullSearch(uintptr_t p, uint32_t *hashIx, uint32_t *bucketIx)
 }
 #endif
 
-uintptr_t NewtShortToLongPointer(uint32_t ix)
+void *NewtShortToLongPointer(uint32_t ix)
 {
    //   printf("Short to long for %u\n", ix);
    if (ix&3) {
@@ -4534,12 +4544,13 @@ uintptr_t NewtShortToLongPointer(uint32_t ix)
       fprintf(stderr, "ERROR: pointer conversion failed - invalid bucket index\n");
       exit(0);
    }
-   return bucket->lut[bucketIx];
+   return (void*)bucket->lut[bucketIx];
 }
 
 
-uint32_t NewtLongToShortPointer(uintptr_t p)
+uint32_t NewtLongToShortPointer(void *pp)
 {
+   uintptr_t p = (uintptr_t)pp;
    int i, n;
 
    //   printf("Long to short for 0x%016lx\n", p);
